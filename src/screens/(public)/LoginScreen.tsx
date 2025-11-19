@@ -7,11 +7,28 @@ import { ModalTemplate } from "@/templates/Modal";
 import { Link } from "expo-router";
 import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
+import SignInWith from "./_components/SignInWith";
 
 export function LoginScreen() {
   const { signIn } = useSession();
   const { t } = useLocalization();
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>();
+
+  function handleLogin() {
+    setIsLoading(true);
+    setError(undefined);
+
+    signIn(email, password).then((response) => {
+      if (response?.type === "error") {
+        setError(response.message);
+      }
+      setIsLoading(false);
+    });
+  }
 
   return (
     <ModalTemplate title={t("Auth.Login.Title")} description={t("Auth.Login.Description")}>
@@ -21,13 +38,15 @@ export function LoginScreen() {
         iconName="mail-outline"
         keyboardType="email-address"
         autoCapitalize="none"
+        onChangeText={setEmail}
       />
       <Input
         placeholder={t("Auth.Login.Password")}
         title={t("Auth.Login.Password")}
         iconName="lock-closed-outline"
         secureTextEntry={!showPassword}
-        className="mt-4"
+        error={error}
+        onChangeText={setPassword}
         rightContent={
           <TouchableOpacity onPressIn={() => setShowPassword(true)} onPressOut={() => setShowPassword(false)}>
             <Ionicons
@@ -43,38 +62,16 @@ export function LoginScreen() {
 
       <Button
         action={{
-          onPress: () => {
-            signIn();
-          },
+          onPress: handleLogin,
           label: t("Auth.Login.Login Button"),
         }}
         isLoading={false}
-        containerClassName="mt-8 bg-black"
+        disabled={isLoading}
+        containerClassName="mt-8 bg-black disabled:opacity-50"
       />
-      <View className="flex-row gap-3 items-center justify-center my-8">
-        <View className="flex-1 border-t border-gray-300" />
-        <Text className="font-light">{t("Auth.Login.Or")}</Text>
-        <View className="flex-1 border-t border-gray-300" />
-      </View>
-      <View className="flex-row gap-3 mb-8">
-        <Button
-          iconName="logo-google"
-          iconColor="#000"
-          action={{ onPress: () => signIn(), label: t("Auth.Login.Login with Google") }}
-          isLoading={false}
-          containerClassName="bg-white flex-1"
-          textClassName="text-black font-light text-sm"
-        />
-        <Button
-          iconName="logo-apple"
-          iconColor="#000"
-          action={{ onPress: () => signIn(), label: t("Auth.Login.Login with Apple") }}
-          isLoading={false}
-          containerClassName="bg-white flex-1"
-          textClassName="text-black font-light text-sm"
-        />
-      </View>
-      <View className="border-gray-300 mx-4 flex-row gap-1 justify-center mb-6">
+
+      <SignInWith isLoading={isLoading} />
+      <View className="border-gray-300 mx-4 flex-row gap-1 justify-center mb-6 mt-2">
         <Text className="font-light">{t("Auth.Login.No Account")}</Text>
         <Link href="/register" className="font-medium">
           {t("Auth.Login.Create Account")}

@@ -4,7 +4,7 @@ import { TouchableOpacity, Text } from "react-native";
 import { Ionicons, IoniconsTypes } from "./Ionicons";
 
 interface ButtonProps extends React.ComponentProps<typeof TouchableOpacity> {
-  action: { onPress: () => void | Promise<void>; label: string };
+  action: { onPress?: () => void | Promise<void>; label: string };
   isLoading?: boolean;
   containerClassName?: string;
   textClassName?: string;
