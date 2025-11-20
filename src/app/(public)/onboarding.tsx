@@ -37,7 +37,7 @@ export default function Onboarding() {
       flatListRef.current?.scrollToIndex({ index: currentIndex + 1 });
       return;
     }
-    router.push("login");
+    router.push("/login");
   };
 
   const handleSkip = () => {
