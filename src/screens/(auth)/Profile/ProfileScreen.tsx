@@ -5,11 +5,12 @@ import TabPage from "@/templates/TabPage";
 import { router } from "expo-router";
 import React, { useRef } from "react";
 import { NotificationModal } from "./NotificationModal";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 export default function ProfileScreen() {
   const { signOut } = useSession();
   const { t } = useLocalization();
-  const sheetRef = useRef(null);
+  const sheetRef = useRef<BottomSheetModal>(null);
   const menuItems: ActionItemProps[] = [
     {
       title: t("Profile.Personal Info"),

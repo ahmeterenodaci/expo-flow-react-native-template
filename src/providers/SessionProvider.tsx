@@ -8,8 +8,8 @@ const AuthContext = createContext<{
   session?: string | null;
   isLoading: boolean;
 }>({
-  signIn: () => null,
-  signOut: () => null,
+  signIn: () => Promise.resolve({ type: "error", message: "Not implemented" }),
+  signOut: () => {},
   session: null,
   isLoading: false,
 });

@@ -2,7 +2,7 @@ import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { Text, TouchableOpacity, View } from "react-native";
 import { Ionicons, IoniconsTypes } from "@/components/Ionicons";
 
-export function NotificationModal({ sheetRef }) {
+export function NotificationModal({ sheetRef }: { sheetRef: React.Ref<BottomSheetModal> }) {
   return (
     <BottomSheetModal
       enableHandlePanningGesture={false}
